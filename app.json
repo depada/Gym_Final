@@ -1,0 +1,29 @@
+{
+  "expo": {
+    "name": "Gym_App_2",
+    "slug": "Gym_App_2",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "light",
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true
+    },
+    "plugins": [
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "The app accesses your photos to let you share them with your friends."
+        }
+      ]
+    ],
+    "android": {
+      "permissions": [
+        "android.permission.RECORD_AUDIO"
+      ],
+      "package": "com.depada.gymAdmin"
+    }
+  }
+}

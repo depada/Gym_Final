@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "218739177502",
+    "project_id": "gym-admin-b63b9",
+    "storage_bucket": "gym-admin-b63b9.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:218739177502:android:e1250acbeec787e64b160f",
+        "android_client_info": {
+          "package_name": "com.depada.gymAdmin"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDpqL5rIugeq0PbSBuf69GlqIwwpd3skuk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
