@@ -20,14 +20,58 @@ const initialData = [
   },
 ];
 
+// function calculateDaysLeft(dateString, monthsOfSubs) {
+//   console.log("initDate==>", dateString, "numberOfMonths==>", monthsOfSubs);
+//   const currentDate = new Date();
+//   console.log("typeof dateStr==>", typeof dateString);
+//   // const dateStringEx = "23/9/2023";
+//   // const [day, month, year] = dateStringEx.split("/").map(Number);
+//   if (!!dateString) {
+//     const [day, month, year] = dateString?.split("/").map(Number);
+//     console.log("day==>", day, "month==>", month, "year==>", year);
+//     let newMonth = month + Number(monthsOfSubs);
+//     let newYear = year;
+
+//     while (newMonth > 12) {
+//       newMonth -= 12;
+//       newYear += 1;
+//     }
+
+//     const expiryDate = new Date(newYear, newMonth - 1, day); // Subtract 1 from month to adjust to JavaScript's 0-based month indexing
+//     console.log("expiryDate==>", expiryDate);
+
+//     // Calculate the difference in milliseconds
+//     const timeDifference = expiryDate - currentDate;
+
+//     // Convert milliseconds to days and round up
+//     const daysLeft = Math.ceil(timeDifference / (1000 * 60 * 60 * 24));
+
+//     return daysLeft;
+//   }
+
+//   // Parse the input date string in "DD/MM/YYYY" format
+//   // const [day, month, year] = dateString
+//   //   ? dateString?.split("/").map(Number)
+//   //   : [0, 0, 0];
+
+//   // Calculate the new month and year after adding months
+// }
 function calculateDaysLeft(dateString, monthsOfSubs) {
   console.log("initDate==>", dateString, "numberOfMonths==>", monthsOfSubs);
   const currentDate = new Date();
 
-  // Parse the input date string in "DD/MM/YYYY" format
-  const [day, month, year] = dateString.split("/").map(Number);
+  // Ensure dateString is a valid date string in "DD/MM/YYYY" format
+  if (
+    typeof dateString !== "string" ||
+    !/^\d{1,2}\/\d{1,2}\/\d{4}$/.test(dateString)
+  ) {
+    console.error("Invalid date format or type:", dateString);
+    return null; // Return null or handle the error gracefully
+  }
 
-  // Calculate the new month and year after adding months
+  const [day, month, year] = dateString.split("/").map(Number);
+  console.log("day==>", day, "month==>", month, "year==>", year);
+
   let newMonth = month + Number(monthsOfSubs);
   let newYear = year;
 
@@ -85,6 +129,7 @@ const ListPage = () => {
   const getAllMembers = async () => {
     try {
       const initDataCollec = await getAllUsers();
+      console.log("userData==>", initDataCollec);
       setMembersData(initDataCollec);
     } catch (error) {
       console.log("error getting usersData=>", error);
@@ -93,6 +138,7 @@ const ListPage = () => {
 
   useEffect(() => {
     getAllMembers();
+    console.log("membersData==>", membersData);
   }, []);
 
   return (

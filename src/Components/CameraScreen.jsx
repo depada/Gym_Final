@@ -160,8 +160,7 @@ const CameraScreen = ({ navigation }) => {
                   padding: 10,
                   color: "#f0c38e",
                 }}
-                value={amountPaid}
-                defaultValue="800"
+                value={`${amountPaid}`}
                 label="amount"
                 keyboardType="numeric"
                 onChangeText={(data) => {

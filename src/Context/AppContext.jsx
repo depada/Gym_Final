@@ -10,7 +10,7 @@ const initialState = {
   lastMonthPaid: new Date(),
   subscriptionPeriod: "1",
   selectedOption: "",
-  amountPaid: 0,
+  amountPaid: 800,
   selectedImage: "",
 };
 

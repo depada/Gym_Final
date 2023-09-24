@@ -14,8 +14,10 @@ export const createUser = async (userData) => {
 
 export const getAllUsers = async () => {
   try {
+    console.log("getHit");
     const collectionRef = collection(db, "members");
     const querySnapshot = await getDocs(collectionRef);
+    console.log("querySnapShot==>", querySnapshot);
 
     return querySnapshot.docs.map((doc) => doc.data());
   } catch (error) {
