@@ -9,9 +9,9 @@ import FormElement from "./FormElement";
 import { radioButtons } from "../../Constants/constants";
 import { useAppContext } from "../Context/AppContext";
 
-const Form = ({ navigation }) => {
+const Form = ({ navigation, item }) => {
   const { formStyles } = globalStyles.addMemberScreenStyles;
-  const { state, updateField, resetForm } = useAppContext();
+  const { state, updateField } = useAppContext();
   const initialErrorState = {
     nameError: "",
     addressError: "",
@@ -159,10 +159,12 @@ const Form = ({ navigation }) => {
   };
 
   const handleNext = () => {
-    // resetForm();
     if (validateOnNext()) {
       navigation.navigate("PhotoUploadScreen");
+    } else {
+      alert("Fill all the details properly");
     }
+    // alert(`selectedOption==>${selectedOption}`);
   };
 
   return (

@@ -8,6 +8,7 @@ import Loading from "./Loading";
 import { createUser } from "../Firebase/firebaseOperations";
 import { storeImage } from "../Firebase/storeImage";
 import { globalStyles } from "../../Styles/GlobalStyles";
+import { formatDate } from "../../utils";
 const CameraScreen = ({ navigation }) => {
   const { state, updateField, isLoading, resetForm } = useAppContext();
   const [error, setError] = useState("");
@@ -24,15 +25,39 @@ const CameraScreen = ({ navigation }) => {
   //   }
   //   updateField("amount", data);
   // };
+  // const handleValidation = (data) => {
+  //   setError("");
+
+  //   if (!data.trim()) {
+  //     setError("Please enter a valid amount");
+  //   } else if (/^0+$|^0+\s|0+\s\d+/.test(data) || isNaN(data)) {
+  //     setError("Please enter a valid amount");
+  //   } else {
+  //     updateField("amount", data);
+  //   }
+  //   updateField("amount", data);
+  // };
+  // const handleValidation = (data) => {
+  //   setError("");
+
+  //   if (!data.trim()) {
+  //     setError("Please enter a valid amount");
+  //   } else if (/^0+$|^0+\s|0+\s\d+/.test(data) || isNaN(data)) {
+  //     setError("Please enter a valid amount");
+  //   } else {
+  //     updateField("amountPaid", data); // Update amountPaid, not amount
+  //   }
+  // };
   const handleValidation = (data) => {
     setError("");
 
     if (!data.trim()) {
       setError("Please enter a valid amount");
-    } else if (/^0+$|^0+\s|0+\s\d+/.test(data) || isNaN(data)) {
+    } else if (/^0\d*$/.test(data) || isNaN(data)) {
       setError("Please enter a valid amount");
     } else {
-      updateField("amount", data);
+      updateField("amountPaid", data); // Update amountPaid, not amount
+      setError("");
     }
   };
 
@@ -97,12 +122,25 @@ const CameraScreen = ({ navigation }) => {
   };
 
   const handleUploadData = async () => {
-    if (error) {
-      return;
+    // console.log("date==>", formatDate(state.joiningDate));
+    if (error && error.trim().length > 0) {
+      alert(error);
     } else {
       updateField("isLoading", true);
       try {
-        const createUserRes = await createUser(state);
+        const userData = {
+          name: state["name"],
+          admissionNumber: state["admissionNumber"],
+          joiningDate: formatDate(state["joiningDate"]),
+          address: state["address"],
+          phoneNumber: state["phoneNumber"],
+          lastMonthPaid: formatDate(state["lastMonthPaid"]),
+          subscriptionPeriod: state["subscriptionPeriod"],
+          selectedOption: state["selectedOption"],
+          amountPaid: state["amountPaid"],
+          selectedImage: state["selectedImage"],
+        };
+        const createUserRes = await createUser(userData);
         updateField("userCreationCode", createUserRes);
 
         console.log("createUserRes==>", createUserRes);
@@ -160,14 +198,15 @@ const CameraScreen = ({ navigation }) => {
                   padding: 10,
                   color: "#f0c38e",
                 }}
-                value={`${amountPaid}`}
+                value={amountPaid}
                 label="amount"
                 keyboardType="numeric"
                 onChangeText={(data) => {
-                  // updateField("amount", data);
                   handleValidation(data);
+                  updateField("amountPaid", data); // Update the state with the new value
                 }}
               />
+
               {error ? (
                 <Text style={formStyles.errorStyle}>{error}</Text>
               ) : null}

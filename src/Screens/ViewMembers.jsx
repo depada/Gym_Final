@@ -102,42 +102,35 @@ const ListPage = () => {
       filteredData.push({
         name: ele["name"],
         amountPaid: ele["amountPaid"],
-        memberShip:
-          ele["selectedOption"] === "1"
-            ? "Cardio + Strength"
-            : ele["selectedOption"] === "2"
-            ? "Only Strength"
-            : ele["selectedOption"] === "3"
-            ? "Personal Training"
-            : "Default",
-        // expiryDate: calculateExpiryAndDaysLeft(
-        //   ele["joiningDate"],
-        //   ele["subscriptionPeriod"]
-        // ),
+        selectedOption: ele["selectedOption"],
+
         numberOfDaysLeft: calculateDaysLeft(
           ele["joiningDate"],
           ele["subscriptionPeriod"]
         ),
         profileImg: ele["selectedImage"],
+        address: ele["address"],
+        phoneNumber: ele["phoneNumber"],
+        joiningDate: ele["joiningDate"],
+        lastMonthPaid: ele["lastMonthPaid"],
+        admissionNumber: ele["admissionNumber"],
       });
     });
   }
 
-  // initialData.filter((item) =>
-  //   item.name.toLowerCase().includes(searchQuery.toLowerCase())
-  // );
-  const getAllMembers = async () => {
-    try {
-      const initDataCollec = await getAllUsers();
-      console.log("userData==>", initDataCollec);
-      setMembersData(initDataCollec);
-    } catch (error) {
-      console.log("error getting usersData=>", error);
-    }
-  };
-
   useEffect(() => {
-    getAllMembers();
+    const getAllMembers = async () => {
+      try {
+        const initDataCollec = await getAllUsers();
+        console.log("userData==>", initDataCollec);
+        setMembersData(initDataCollec);
+      } catch (error) {
+        console.log("error getting usersData=>", error);
+      }
+    };
+
+    getAllMembers(); // Move the function call inside useEffect
+
     console.log("membersData==>", membersData);
   }, []);
 
@@ -162,7 +155,16 @@ const ListPage = () => {
       {membersData ? (
         <ScrollView>
           {filteredData.map((item, index) => {
-            return <ListCard key={index} data={item} />;
+            return (
+              <TouchableOpacity key={index}>
+                <ListCard
+                  onClick={() =>
+                    navigation.navigate("EditUserScreen", { item })
+                  } // Pass a callback function
+                  data={item}
+                />
+              </TouchableOpacity>
+            );
           })}
         </ScrollView>
       ) : (

@@ -9,8 +9,8 @@ const initialState = {
   phoneNumber: "",
   lastMonthPaid: new Date(),
   subscriptionPeriod: "1",
-  selectedOption: "",
-  amountPaid: 800,
+  selectedOption: "2",
+  amountPaid: "800",
   selectedImage: "",
 };
 

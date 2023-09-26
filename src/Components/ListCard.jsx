@@ -1,35 +1,52 @@
-import React from "react";
-import { View, Text, Image, StyleSheet } from "react-native";
-
-const ListCard = ({ data }) => {
-  const defaultImageSource =
-    "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png";
-  // !ProfileImg
-  //   ? "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
-  //   : ProfileImg;
-  const { amountPaid, memberShip, name, profileImg, numberOfDaysLeft } = data;
+import React, { useEffect, useState } from "react";
+import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
+export const defaultImageSource =
+  "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png";
+const ListCard = ({ data, onClick }) => {
+  const { amountPaid, selectedOption, name, profileImg, numberOfDaysLeft } =
+    data;
   console.log("numberOfDaysLeft==>", numberOfDaysLeft);
+  const [membershipType, setMembershipType] = useState();
+
+  const displaySubscription = (selectedOption) => {
+    console.log("displaySubscription", selectedOption);
+    setMembershipType(
+      selectedOption === "1"
+        ? "Cardio + Strength"
+        : selectedOption === "2"
+        ? "Only Strength"
+        : selectedOption === "3"
+        ? "Personal Training"
+        : ""
+    );
+  };
+
+  useEffect(() => {
+    displaySubscription(selectedOption);
+  }, [data]);
 
   return (
     <View style={styles.container}>
-      <View style={styles.cardContainer}>
-        <Image
-          style={styles.cardImage}
-          src={profileImg ? profileImg : defaultImageSource}
-        />
-        <View style={styles.cardContent}>
-          <View style={styles.headerContent}>
-            <Text style={styles.cardContentName}>{name}</Text>
-            <View style={styles.membership}>
-              <Text style={styles.membershipText}>{memberShip}</Text>
+      <TouchableOpacity onPress={onClick}>
+        <View style={styles.cardContainer}>
+          <Image
+            style={styles.cardImage}
+            src={profileImg ? profileImg : defaultImageSource}
+          />
+          <View style={styles.cardContent}>
+            <View style={styles.headerContent}>
+              <Text style={styles.cardContentName}>{name}</Text>
+              <View style={styles.membership}>
+                <Text style={styles.membershipText}>{membershipType}</Text>
+              </View>
             </View>
+            <Text style={styles.cardContentAmount}>Amt-Paid: {amountPaid}</Text>
+            <Text style={styles.cardContentExpiryDate}>
+              Exp: {numberOfDaysLeft} Days Left
+            </Text>
           </View>
-          <Text style={styles.cardContentAmount}>Amt-Paid: {amountPaid}</Text>
-          <Text style={styles.cardContentExpiryDate}>
-            Exp: {numberOfDaysLeft} Days Left
-          </Text>
         </View>
-      </View>
+      </TouchableOpacity>
     </View>
   );
 };

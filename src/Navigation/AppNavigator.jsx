@@ -4,6 +4,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import {
   AddMember,
   ConclusionScreen,
+  EditUserScreen,
   LandingScreen,
   PhotoUploadScreen,
   ViewMembers,
@@ -18,6 +19,7 @@ const AppNavigator = () => {
         <Stack.Screen name="AddMemberScreen" component={AddMember} />
         <Stack.Screen name="ViewMembersScreen" component={ViewMembers} />
         <Stack.Screen name="PhotoUploadScreen" component={PhotoUploadScreen} />
+        <Stack.Screen name="EditUserScreen" component={EditUserScreen} />
         <Stack.Screen name="ConclusionScreen" component={ConclusionScreen} />
       </Stack.Navigator>
     </NavigationContainer>

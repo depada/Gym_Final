@@ -4,6 +4,7 @@ import Loading from "./Loading";
 import SliderButton from "./SliderButton";
 import CameraScreen from "./CameraScreen";
 import Header from "./Header";
+import EditUser from "./EditUser";
 import ConclusionText from "./ConclusionText";
 
 export {
@@ -14,4 +15,5 @@ export {
   Header,
   CameraScreen,
   ConclusionText,
+  EditUser,
 };
