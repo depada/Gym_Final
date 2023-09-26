@@ -50,7 +50,16 @@ const FormElement = ({ label, type, value, onChange, error }) => {
     // Pass the value to the parent component
     onChange(text);
   };
-
+  const handleDateTransform = (dateString) => {
+    const dateParts = dateString.split("/");
+    if (dateParts.length === 3) {
+      const [day, month, year] = dateParts.map(Number);
+      if (!isNaN(day) && !isNaN(month) && !isNaN(year)) {
+        return new Date(year, month - 1, day); // Month is zero-based
+      }
+    }
+    return null; // Invalid date string
+  };
   return type === "textField" ? (
     <View style={formStyles.row}>
       <Text style={formStyles.label}>{typeMap[label]}</Text>
@@ -89,7 +98,7 @@ const FormElement = ({ label, type, value, onChange, error }) => {
   ) : type === "datePicker" ? (
     <DatePicker
       label={typeMap[label]}
-      value={value}
+      value={typeof value === "string" ? handleDateTransform(value) : value}
       onChange={(date) => onChange(date)}
     />
   ) : null;

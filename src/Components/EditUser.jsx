@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, ScrollView, Image } from "react-native";
+import { View, ScrollView, Image, Dimensions } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { RadioGroup } from "react-native-radio-buttons-group";
 import Button from "./Button";
@@ -13,221 +13,124 @@ import { defaultImageSource } from "./ListCard";
 const EditUser = ({ navigation, data }) => {
   const { formStyles } = globalStyles.addMemberScreenStyles;
   const { state, updateField } = useAppContext();
-  const initialErrorState = {
+
+  const [user, setUser] = useState(data);
+  const [errors, setErrors] = useState({
     nameError: "",
     addressError: "",
     admissionNumberError: "",
     subscriptionPeriodError: "",
     phoneNumberError: "",
+  });
+
+  const handleFieldChange = (field, value) => {
+    setUser({ ...user, [field]: value });
+    validateField(field, value);
   };
-  const [editUserState, setEditUserState] = useState();
-  const [errors, setErrors] = useState(initialErrorState);
-  const {
-    nameError,
-    addressError,
-    admissionNumberError,
-    subscriptionPeriodError,
-    phoneNumberError,
-  } = errors;
 
-  //   const {
-  //     name,
-  //     address,
-  //     phoneNumber,
-  //     joiningDate,
-  //     lastMonthPaid,
-  //     admissionNumber,
-  //     subscriptionPeriod,
-  //     selectedOption,
-  //   } = state;
+  const validateField = (field, value) => {
+    // Validation logic for each field
+    let error = "";
 
-  const {
-    address,
-    amountPaid,
-    lastMonthPaid,
-    selectedOption,
-    phoneNumber,
-    name,
-    joiningDate,
-    profileImg,
-    admissionNumber,
-  } = data;
+    if (field === "subscriptionPeriod") {
+      if (
+        isNaN(Number(value)) ||
+        Number(value) < 1 ||
+        Number(value) > 12 ||
+        !value?.trim()
+      ) {
+        error = "Subscription period must be a number between 1 and 12";
+      }
+    } else if (field === "name") {
+      if (!value) {
+        error = "Name must not be empty";
+      }
+    } else if (field === "phoneNumber") {
+      if (value?.length !== 10) {
+        error = "Mobile number must be exactly 10 digits";
+      }
+    } else if (field === "address") {
+      if (!value?.trim()) {
+        error = "Address must not be empty";
+      }
+    }
+
+    setErrors({ ...errors, [`${field}Error`]: error });
+  };
+
+  const screenWidth = Dimensions.get("window").width;
+  const imageWidth = screenWidth * 0.45;
+  const imageHeight = imageWidth;
+
   const formElementsArr = [
-    {
-      value: name,
-      onChange: (name) => handleStateChange("name", name),
-      label: "name",
-      type: "textField",
-      id: "name",
-      error: nameError,
-    },
-    {
-      value: address,
-      onChange: (address) => handleStateChange("address", address),
-      label: "address",
-      type: "textField",
-      id: "address",
-      error: addressError,
-    },
-    {
-      value: phoneNumber,
-      onChange: (phoneNumber) => handleStateChange("phoneNumber", phoneNumber),
-      label: "phoneNumber",
-      type: "textField",
-      id: "phoneNumber",
-      error: phoneNumberError,
-    },
-    {
-      value: joiningDate,
-      onChange: (date) => handleStateChange("joiningDate", date),
-      label: "joiningDate",
-      type: "datePicker",
-      error: "",
-      id: "joiningDate",
-    },
-    {
-      value: lastMonthPaid,
-      onChange: (date) => handleStateChange("lastMonthPaid", date),
-      label: "lastMonthPaid",
-      type: "datePicker",
-      error: "",
-      id: "lastMonthPaid",
-    },
-    // {
-    //   value: subscriptionPeriod,
-    //   onChange: (subscriptionPeriod) =>
-    //     handleStateChange("subscriptionPeriod", subscriptionPeriod),
-    //   label: "subscriptionPeriod",
-    //   type: "textField",
-    //   id: "subscriptionPeriod",
-    //   error: subscriptionPeriodError,
-    // },
-    { id: "radioButtons" },
-    {
-      value: admissionNumber,
-      onChange: (admissionNumber) =>
-        handleStateChange("admissionNumber", admissionNumber),
-      label: "admissionNumber",
-      type: "textField",
-      id: "admissionNumber",
-      error: admissionNumberError,
-    },
+    { label: "name", type: "textField" },
+    { label: "address", type: "textField" },
+    { label: "amountPaid", type: "textField" },
+    { label: "joiningDate", type: "datePicker" },
+    { label: "phoneNumber", type: "textField" },
+    { label: "subscriptionPeriod", type: "textField" },
   ];
-  const handleStateChange = (field, value) => {
-    // Use updateField from the context to update the state
-    updateField(field, value);
+
+  const validateForm = () => {
+    for (const field of formElementsArr) {
+      validateField(field.label, user[field.label]);
+    }
+
+    // Check if any errors exist
+    return Object.values(errors).every((error) => !error);
   };
 
-  const validateOnNext = () => {
-    setErrors(initialErrorState); // Reset all errors
-
-    let hasErrors = false;
-
-    if (
-      isNaN(Number(subscriptionPeriod)) ||
-      Number(subscriptionPeriod) < 1 ||
-      Number(subscriptionPeriod) > 12 ||
-      !subscriptionPeriod?.trim()
-    ) {
-      setErrors((prevErrors) => ({
-        ...prevErrors,
-        subscriptionPeriodError:
-          "Subscription period must be a number between 1 and 12",
-      }));
-      hasErrors = true;
-    }
-
-    if (!name) {
-      setErrors((prevErrors) => ({
-        ...prevErrors,
-        nameError: "Name must not be empty",
-      }));
-      hasErrors = true;
-    }
-
-    if (phoneNumber?.length !== 10) {
-      setErrors((prevErrors) => ({
-        ...prevErrors,
-        phoneNumberError: "Mobile number must be exactly 10 digits",
-      }));
-      hasErrors = true;
-    }
-
-    if (!address?.trim()) {
-      setErrors((prevErrors) => ({
-        ...prevErrors,
-        addressError: "Address must not be empty",
-      }));
-      hasErrors = true;
-    }
-
-    if (!admissionNumber?.trim()) {
-      setErrors((prevErrors) => ({
-        ...prevErrors,
-        admissionNumberError: "Admission number must not be empty",
-      }));
-      hasErrors = true;
-    }
-
-    return !hasErrors; // Return true if there are no errors, otherwise false
-  };
-
-  const handleNext = () => {
-    if (validateOnNext()) {
-      navigation.navigate("PhotoUploadScreen");
+  const handleUpdate = () => {
+    if (validateForm()) {
+      // Perform the update action
+      alert("Update successful!");
     } else {
       alert("Fill all the details properly");
     }
-    // alert(`selectedOption==>${selectedOption}`);
   };
-
-  useEffect(() => {
-    setEditUserState(data);
-
-    console.log("editState==>", editUserState);
-  }, [data]);
 
   return (
     <SafeAreaView style={formStyles.safeAreaViewContainer}>
       <Header />
+      <View style={{ justifyContent: "center", alignItems: "center" }}>
+        <Image
+          style={{
+            width: imageWidth,
+            height: imageHeight,
+            borderRadius: imageWidth / 2,
+            alignSelf: "center",
+          }}
+          source={{ uri: user?.profileImg || defaultImageSource }}
+        />
+      </View>
       <ScrollView
-        contentContainerStyle={{}}
+        contentContainerStyle={{
+          flexGrow: 1,
+        }}
         style={formStyles.scrollViewContainer}
       >
-        {/* {formElementsArr.map((ele) => {
-          if (ele.id === "radioButtons") {
-            return (
-              <View key={ele.id} style={formStyles.radioBtnContainer}>
-                <RadioGroup
-                  containerStyle={formStyles.radioBtnContent}
-                  radioButtons={radioButtons}
-                  selectedId={selectedOption ? selectedOption : "2"}
-                  onPress={(option) => updateField("selectedOption", option)}
-                  flexDirection="row"
-                />
-              </View>
-            );
-          } else {
-            return (
-              <FormElement
-                value={data[ele.label]}
-                label={ele.label}
-                type={ele.type}
-                onChange={(data) => handleStateChange(ele.label, data)}
-                key={ele.id}
-                error={ele.error}
-              />
-            );
-          }
-        })} */}
-        <FormElement
-          label={"name"}
-          type={"textField"}
-          value={editUserState?.name}
-          onChange={(text) => setEditUserState({ name: text })}
-        />
+        {formElementsArr.map((field) => (
+          <FormElement
+            key={field.label}
+            label={field.label}
+            type={field.type}
+            value={user[field.label]}
+            onChange={(text) => handleFieldChange(field.label, text)}
+            error={errors[`${field.label}Error`]}
+            style={{ height: Dimensions.get("window").height * 0.1 }}
+          />
+        ))}
+        <View style={formStyles.radioBtnContainer}>
+          <RadioGroup
+            containerStyle={formStyles.radioBtnContent}
+            radioButtons={radioButtons}
+            selectedId={user?.selectedOption}
+            onPress={(option) => handleFieldChange("selectedOption", option)}
+            flexDirection="row"
+          />
+        </View>
         <View style={formStyles.buttonContainer}>
-          <Button label="Next" onPress={handleNext} />
+          <Button label="Update" onPress={handleUpdate} />
         </View>
       </ScrollView>
     </SafeAreaView>

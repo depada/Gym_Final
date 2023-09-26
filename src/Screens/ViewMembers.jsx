@@ -114,6 +114,7 @@ const ListPage = () => {
         joiningDate: ele["joiningDate"],
         lastMonthPaid: ele["lastMonthPaid"],
         admissionNumber: ele["admissionNumber"],
+        subscriptionPeriod: ele["subscriptionPeriod"],
       });
     });
   }
