@@ -5,7 +5,6 @@ import { useAppContext } from "../Context/AppContext";
 
 const ConclusionScreen = () => {
   const { userCreationCode } = useAppContext();
-  console.log("userCreationCodeFromConclusionScreen==>", userCreationCode);
 
   return (
     <SafeAreaView

@@ -12,9 +12,10 @@ const FormElement = ({ label, type, value, onChange, error }) => {
     phoneNumber: "Mobile Number",
     subscriptionPeriod: "Months of GYM Subscription",
     admissionNumber: "Admission Number",
-    lastMonthPaid: "Last Month Paid",
+    lastTimePaid: "Last Time Paid",
     joiningDate: "Joining Date",
     selectedOption: "Choose one option",
+    amountPaid: "Amount Paid",
   };
 
   const [errorEle, setErrorEle] = useState(""); // To store validation errorEle message

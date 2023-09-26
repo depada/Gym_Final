@@ -9,7 +9,6 @@ const DatePicker = ({ label, value, onChange }) => {
   const [showDatePicker, setShowDatePicker] = useState(false);
 
   const handleDateChange = (event, selectedDate) => {
-    console.log(`${label} dateChanged==>`, selectedDate);
     setShowDatePicker(false);
     if (selectedDate) {
       onChange(selectedDate);

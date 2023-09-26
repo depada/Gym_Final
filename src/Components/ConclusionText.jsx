@@ -3,7 +3,6 @@ import { MaterialIcons } from "@expo/vector-icons";
 import React from "react";
 
 const ConclusionText = ({ statusCode }) => {
-  console.log("statusCodefromConclusionText==>", statusCode);
   return (
     <View style={{ alignItems: "center" }}>
       {statusCode ? (

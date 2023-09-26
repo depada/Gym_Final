@@ -7,11 +7,11 @@ const initialState = {
   joiningDate: new Date(),
   address: "",
   phoneNumber: "",
-  lastMonthPaid: new Date(),
+  lastTimePaid: new Date(),
   subscriptionPeriod: "1",
   selectedOption: "2",
   amountPaid: "800",
-  selectedImage: "",
+  profileImg: "",
 };
 
 // Step 4: Create a context with the initial state as the default value

@@ -5,11 +5,9 @@ export const defaultImageSource =
 const ListCard = ({ data, onClick }) => {
   const { amountPaid, selectedOption, name, profileImg, numberOfDaysLeft } =
     data;
-  console.log("numberOfDaysLeft==>", numberOfDaysLeft);
   const [membershipType, setMembershipType] = useState();
 
   const displaySubscription = (selectedOption) => {
-    console.log("displaySubscription", selectedOption);
     setMembershipType(
       selectedOption === "1"
         ? "Cardio + Strength"

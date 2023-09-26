@@ -9,55 +9,7 @@ import { getAllUsers } from "../Firebase/firebaseOperations";
 import { formatDate } from "../../utils";
 import Loading from "../Components/Loading";
 
-const initialData = [
-  {
-    name: "shyam",
-    amountPaid: "1000",
-    joiningDate: "01-08-2023",
-    monthsOfSubs: 2,
-    profileImg:
-      "https://www.thesun.co.uk/wp-content/uploads/2019/11/NINTCHDBPICT000303802783-e1573032149745.jpg",
-  },
-];
-
-// function calculateDaysLeft(dateString, monthsOfSubs) {
-//   console.log("initDate==>", dateString, "numberOfMonths==>", monthsOfSubs);
-//   const currentDate = new Date();
-//   console.log("typeof dateStr==>", typeof dateString);
-//   // const dateStringEx = "23/9/2023";
-//   // const [day, month, year] = dateStringEx.split("/").map(Number);
-//   if (!!dateString) {
-//     const [day, month, year] = dateString?.split("/").map(Number);
-//     console.log("day==>", day, "month==>", month, "year==>", year);
-//     let newMonth = month + Number(monthsOfSubs);
-//     let newYear = year;
-
-//     while (newMonth > 12) {
-//       newMonth -= 12;
-//       newYear += 1;
-//     }
-
-//     const expiryDate = new Date(newYear, newMonth - 1, day); // Subtract 1 from month to adjust to JavaScript's 0-based month indexing
-//     console.log("expiryDate==>", expiryDate);
-
-//     // Calculate the difference in milliseconds
-//     const timeDifference = expiryDate - currentDate;
-
-//     // Convert milliseconds to days and round up
-//     const daysLeft = Math.ceil(timeDifference / (1000 * 60 * 60 * 24));
-
-//     return daysLeft;
-//   }
-
-//   // Parse the input date string in "DD/MM/YYYY" format
-//   // const [day, month, year] = dateString
-//   //   ? dateString?.split("/").map(Number)
-//   //   : [0, 0, 0];
-
-//   // Calculate the new month and year after adding months
-// }
 function calculateDaysLeft(dateString, monthsOfSubs) {
-  console.log("initDate==>", dateString, "numberOfMonths==>", monthsOfSubs);
   const currentDate = new Date();
 
   // Ensure dateString is a valid date string in "DD/MM/YYYY" format
@@ -70,7 +22,6 @@ function calculateDaysLeft(dateString, monthsOfSubs) {
   }
 
   const [day, month, year] = dateString.split("/").map(Number);
-  console.log("day==>", day, "month==>", month, "year==>", year);
 
   let newMonth = month + Number(monthsOfSubs);
   let newYear = year;
@@ -81,7 +32,6 @@ function calculateDaysLeft(dateString, monthsOfSubs) {
   }
 
   const expiryDate = new Date(newYear, newMonth - 1, day); // Subtract 1 from month to adjust to JavaScript's 0-based month indexing
-  console.log("expiryDate==>", expiryDate);
 
   // Calculate the difference in milliseconds
   const timeDifference = expiryDate - currentDate;
@@ -108,11 +58,11 @@ const ListPage = () => {
           ele["joiningDate"],
           ele["subscriptionPeriod"]
         ),
-        profileImg: ele["selectedImage"],
+        profileImg: ele["profileImg"],
         address: ele["address"],
         phoneNumber: ele["phoneNumber"],
         joiningDate: ele["joiningDate"],
-        lastMonthPaid: ele["lastMonthPaid"],
+        lastTimePaid: ele["lastTimePaid"],
         admissionNumber: ele["admissionNumber"],
         subscriptionPeriod: ele["subscriptionPeriod"],
       });
@@ -123,7 +73,6 @@ const ListPage = () => {
     const getAllMembers = async () => {
       try {
         const initDataCollec = await getAllUsers();
-        console.log("userData==>", initDataCollec);
         setMembersData(initDataCollec);
       } catch (error) {
         console.log("error getting usersData=>", error);
@@ -131,8 +80,6 @@ const ListPage = () => {
     };
 
     getAllMembers(); // Move the function call inside useEffect
-
-    console.log("membersData==>", membersData);
   }, []);
 
   return (

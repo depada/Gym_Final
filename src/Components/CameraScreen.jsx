@@ -15,8 +15,7 @@ const CameraScreen = ({ navigation }) => {
 
   const { formStyles } = globalStyles.addMemberScreenStyles;
 
-  const { selectedImage, amountPaid } = state;
-  console.log("amount==>", amountPaid);
+  const { profileImg, amountPaid } = state;
 
   // const handleValidation = (data) => {
   //   setError("");
@@ -71,8 +70,7 @@ const CameraScreen = ({ navigation }) => {
         blob,
         `${state.name}_${state.admissionNumber}.jpg` // Provide a file extension
       );
-      console.log("cloudAddress==>", cloudAddress);
-      updateField("selectedImage", cloudAddress);
+      updateField("profileImg", cloudAddress);
     } catch (error) {
       console.error("Error storing image:", error);
     }
@@ -122,7 +120,6 @@ const CameraScreen = ({ navigation }) => {
   };
 
   const handleUploadData = async () => {
-    // console.log("date==>", formatDate(state.joiningDate));
     if (error && error.trim().length > 0) {
       alert(error);
     } else {
@@ -134,16 +131,16 @@ const CameraScreen = ({ navigation }) => {
           joiningDate: formatDate(state["joiningDate"]),
           address: state["address"],
           phoneNumber: state["phoneNumber"],
-          lastMonthPaid: formatDate(state["lastMonthPaid"]),
+          lastTimePaid: formatDate(state["lastTimePaid"]),
           subscriptionPeriod: state["subscriptionPeriod"],
           selectedOption: state["selectedOption"],
           amountPaid: state["amountPaid"],
-          selectedImage: state["selectedImage"],
+          profileImg: state["profileImg"],
         };
+        console.log("profileImage==>", userData["profileImg"]);
         const createUserRes = await createUser(userData);
         updateField("userCreationCode", createUserRes);
 
-        console.log("createUserRes==>", createUserRes);
         updateField("isLoading", false);
         if (createUserRes) {
           navigation.navigate("ConclusionScreen");
@@ -170,7 +167,7 @@ const CameraScreen = ({ navigation }) => {
         <Loading />
       ) : (
         <>
-          {selectedImage && (
+          {profileImg && (
             <View
               style={{
                 width: "100%",
@@ -182,7 +179,7 @@ const CameraScreen = ({ navigation }) => {
             >
               <Image
                 // source={}
-                src={selectedImage}
+                src={profileImg}
                 style={{ width: "90%", height: "50%" }}
                 resizeMode="contain"
               />
